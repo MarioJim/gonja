@@ -10,13 +10,10 @@
 ### As a library
 
 Install/update using `go get`:
-```
-go get github.com/nikolalohinski/gonja
-```
 
-### As a `terraform` provider
-
-This `gonja` library has been packaged as a `terraform` provider. For more information, please refer to the [dedicated documentation](https://registry.terraform.io/providers/NikolaLohinski/jinja/latest/docs).
+```
+go get github.com/MarioJim/gonja
+```
 
 ## Example
 
@@ -26,7 +23,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/nikolalohinski/gonja"
+	"github.com/MarioJim/gonja"
 )
 
 func main() {
@@ -44,17 +41,17 @@ func main() {
 
 ## Documentation
 
-* For a details on how the template language works, please refer to [the Jinja documentation](https://jinja.palletsprojects.com) ;
-* `gonja` API documentation is available on [godoc](https://godoc.org/github.com/nikolalohinski/gonja) ;
-* `filters`: please refer to [`docs/filters.md`](docs/filters.md) ;
-* `statements`: please take a look at [`docs/statements.md`](docs/statements.md) ;
-* `tests`: please see [`docs/tests.md`](docs/tests.md) ;
-* `globals`: please browse through [`docs/globals.md`](docs/globals.md).
+- For a details on how the template language works, please refer to [the Jinja documentation](https://jinja.palletsprojects.com) ;
+- `gonja` API documentation is available on [godoc](https://godoc.org/github.com/MarioJim/gonja) ;
+- `filters`: please refer to [`docs/filters.md`](docs/filters.md) ;
+- `statements`: please take a look at [`docs/statements.md`](docs/statements.md) ;
+- `tests`: please see [`docs/tests.md`](docs/tests.md) ;
+- `globals`: please browse through [`docs/globals.md`](docs/globals.md).
 
-## Limitations 
+## Limitations
 
-* **format**: `format` does **not** take Python's string format syntax as a parameter, instead it takes Go's. Essentially `{{ 3.14|stringformat:"pi is %.2f" }}` is `fmt.Sprintf("pi is %.2f", 3.14)`.
-* **escape** / **force_escape**: Unlike Jinja's behavior, the `escape`-filter is applied immediately. Therefore there is no need for a `force_escape`-filter yet.
+- **format**: `format` does **not** take Python's string format syntax as a parameter, instead it takes Go's. Essentially `{{ 3.14|stringformat:"pi is %.2f" }}` is `fmt.Sprintf("pi is %.2f", 3.14)`.
+- **escape** / **force_escape**: Unlike Jinja's behavior, the `escape`-filter is applied immediately. Therefore there is no need for a `force_escape`-filter yet.
 
 ## Tribute
 

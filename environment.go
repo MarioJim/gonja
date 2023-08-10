@@ -5,10 +5,10 @@ import (
 	"io"
 	"sync"
 
-	"github.com/nikolalohinski/gonja/builtins"
-	"github.com/nikolalohinski/gonja/config"
-	"github.com/nikolalohinski/gonja/exec"
-	"github.com/nikolalohinski/gonja/loaders"
+	"github.com/MarioJim/gonja/builtins"
+	"github.com/MarioJim/gonja/config"
+	"github.com/MarioJim/gonja/exec"
+	"github.com/MarioJim/gonja/loaders"
 )
 
 type Environment struct {

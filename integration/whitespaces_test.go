@@ -10,8 +10,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/nikolalohinski/gonja"
-	"github.com/nikolalohinski/gonja/config"
+	"github.com/MarioJim/gonja"
+	"github.com/MarioJim/gonja/config"
 	"github.com/pmezard/go-difflib/difflib"
 )
 

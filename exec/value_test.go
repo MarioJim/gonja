@@ -6,7 +6,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/nikolalohinski/gonja/exec"
+	"github.com/MarioJim/gonja/exec"
 	"github.com/stretchr/testify/assert"
 )
 

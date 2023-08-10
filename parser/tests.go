@@ -3,8 +3,8 @@ package parser
 import (
 	log "github.com/sirupsen/logrus"
 
-	"github.com/nikolalohinski/gonja/nodes"
-	"github.com/nikolalohinski/gonja/tokens"
+	"github.com/MarioJim/gonja/nodes"
+	"github.com/MarioJim/gonja/tokens"
 )
 
 func (p *Parser) ParseTest(expr nodes.Expression) (nodes.Expression, error) {

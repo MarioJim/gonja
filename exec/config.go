@@ -3,8 +3,8 @@ package exec
 import (
 	"github.com/pkg/errors"
 
-	"github.com/nikolalohinski/gonja/config"
-	"github.com/nikolalohinski/gonja/nodes"
+	"github.com/MarioJim/gonja/config"
+	"github.com/MarioJim/gonja/nodes"
 )
 
 type EvalConfig struct {

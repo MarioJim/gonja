@@ -6,7 +6,7 @@ import (
 	// "os"
 	"fmt"
 
-	"github.com/nikolalohinski/gonja/tokens"
+	"github.com/MarioJim/gonja/tokens"
 	"github.com/pkg/errors"
 )
 

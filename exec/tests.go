@@ -3,7 +3,7 @@ package exec
 import (
 	"github.com/pkg/errors"
 
-	"github.com/nikolalohinski/gonja/nodes"
+	"github.com/MarioJim/gonja/nodes"
 )
 
 // TestFunction is the type test functions must fulfil

@@ -5,10 +5,10 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
-	"github.com/nikolalohinski/gonja/exec"
-	"github.com/nikolalohinski/gonja/nodes"
-	"github.com/nikolalohinski/gonja/parser"
-	"github.com/nikolalohinski/gonja/tokens"
+	"github.com/MarioJim/gonja/exec"
+	"github.com/MarioJim/gonja/nodes"
+	"github.com/MarioJim/gonja/parser"
+	"github.com/MarioJim/gonja/tokens"
 )
 
 type IfStmt struct {

@@ -3,16 +3,16 @@ package statements
 import (
 	// "bytes"
 
-	// "github.com/nikolalohinski/gonja/exec"
+	// "github.com/MarioJim/gonja/exec"
 	"fmt"
 	"strings"
 
 	"github.com/pkg/errors"
 
-	"github.com/nikolalohinski/gonja/exec"
-	"github.com/nikolalohinski/gonja/nodes"
-	"github.com/nikolalohinski/gonja/parser"
-	"github.com/nikolalohinski/gonja/tokens"
+	"github.com/MarioJim/gonja/exec"
+	"github.com/MarioJim/gonja/nodes"
+	"github.com/MarioJim/gonja/parser"
+	"github.com/MarioJim/gonja/tokens"
 )
 
 type FilterStmt struct {

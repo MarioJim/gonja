@@ -3,8 +3,8 @@ package builtins
 import (
 	"github.com/pkg/errors"
 
-	"github.com/nikolalohinski/gonja/exec"
-	"github.com/nikolalohinski/gonja/utils"
+	"github.com/MarioJim/gonja/exec"
+	"github.com/MarioJim/gonja/utils"
 )
 
 var Globals = exec.NewContext(map[string]interface{}{

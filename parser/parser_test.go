@@ -9,9 +9,9 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/nikolalohinski/gonja/nodes"
-	"github.com/nikolalohinski/gonja/parser"
-	"github.com/nikolalohinski/gonja/tokens"
+	"github.com/MarioJim/gonja/nodes"
+	"github.com/MarioJim/gonja/parser"
+	"github.com/MarioJim/gonja/tokens"
 	log "github.com/sirupsen/logrus"
 	prefixed "github.com/x-cray/logrus-prefixed-formatter"
 )

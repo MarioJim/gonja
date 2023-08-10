@@ -88,7 +88,7 @@ func (p *Parser) parseList() (nodes.Expression, error) {
 
 	if p.Match(tokens.Rbracket) != nil {
 		// Empty list
-		return &nodes.List{t, []nodes.Expression{}}, nil
+		return &nodes.List{Location: t, Val: []nodes.Expression{}}, nil
 	}
 
 	expr, err := p.ParseExpression()
@@ -116,7 +116,7 @@ func (p *Parser) parseList() (nodes.Expression, error) {
 		return nil, p.Error("Expected ]", p.Current())
 	}
 
-	return &nodes.List{t, list}, nil
+	return &nodes.List{Location: t, Val: list}, nil
 }
 
 func (p *Parser) parseTuple() (nodes.Expression, error) {
@@ -157,7 +157,7 @@ func (p *Parser) parseTuple() (nodes.Expression, error) {
 	}
 
 	if len(list) > 1 || trailingComa {
-		return &nodes.Tuple{t, list}, nil
+		return &nodes.Tuple{Location: t, Val: list}, nil
 	} else {
 		return expr, nil
 	}
@@ -252,7 +252,7 @@ func (p *Parser) ParseVariable() (nodes.Expression, error) {
 		return br, nil
 	}
 
-	var variable nodes.Node = &nodes.Name{t}
+	var variable nodes.Node = &nodes.Name{Name: t}
 
 	for !p.Stream.EOF() {
 		if dot := p.Match(tokens.Dot); dot != nil {

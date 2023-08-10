@@ -4,7 +4,8 @@ import (
 	// "bufio"
 	// "fmt"
 	// "os"
-	"github.com/goph/emperror"
+	"fmt"
+
 	"github.com/nikolalohinski/gonja/tokens"
 	"github.com/pkg/errors"
 )
@@ -45,10 +46,8 @@ func (p *Parser) Error(msg string, token *tokens.Token) error {
 	if token == nil {
 		return errors.New(msg)
 	} else {
-		return emperror.With(
-			errors.Errorf(`%s (Line: %d Col: %d, near "%s")`, msg, token.Line, token.Col, token.Val),
-			"token", token,
-		)
+		return fmt.Errorf("%s, line: %d, col: %d, near: %q, token: %q", msg,
+			token.Line, token.Col, token.Val, token)
 	}
 }
 

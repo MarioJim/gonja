@@ -1,10 +1,9 @@
 package gonja
 
 import (
-	"io/ioutil"
+	"fmt"
+	"io"
 	"sync"
-
-	"github.com/goph/emperror"
 
 	"github.com/nikolalohinski/gonja/builtins"
 	"github.com/nikolalohinski/gonja/config"
@@ -97,11 +96,11 @@ func (env *Environment) FromBytes(tpl []byte) (*exec.Template, error) {
 func (env *Environment) FromFile(filename string) (*exec.Template, error) {
 	fd, err := env.Loader.Get(filename)
 	if err != nil {
-		return nil, emperror.With(err, "filename", filename)
+		return nil, fmt.Errorf("%v, filename: %s", err, filename)
 	}
-	buf, err := ioutil.ReadAll(fd)
+	buf, err := io.ReadAll(fd)
 	if err != nil {
-		return nil, emperror.With(err, "filename", filename)
+		return nil, fmt.Errorf("%v, filename: %s", err, filename)
 	}
 
 	return exec.NewTemplate(filename, string(buf), env.EvalConfig)

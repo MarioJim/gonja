@@ -3,11 +3,10 @@ package builtins
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
 	"math"
 	"math/rand"
 	"net/url"
-	"path"
+	"os"
 	"path/filepath"
 	"regexp"
 	"sort"
@@ -19,7 +18,6 @@ import (
 	json "github.com/json-iterator/go"
 	"github.com/pelletier/go-toml/v2"
 	"github.com/pkg/errors"
-	"github.com/yargevad/filepathx"
 	"golang.org/x/exp/slices"
 	"gopkg.in/yaml.v3"
 
@@ -51,7 +49,6 @@ var Filters = exec.FilterSet{
 	"escape":         filterEscape,
 	"fail":           filterFail,
 	"file":           filterFile,
-	"fileset":        filterFileset,
 	"filesizeformat": filterFileSize,
 	"first":          filterFirst,
 	"flatten":        filterFlatten,
@@ -1691,30 +1688,6 @@ func filterFlatten(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exe
 	return exec.AsValue(out)
 }
 
-func filterFileset(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec.Value {
-	if in.IsError() {
-		return in
-	}
-	if !in.IsString() {
-		return exec.AsValue(errors.New("Filter 'fileset' was passed a non-string type"))
-	}
-
-	p := params.ExpectNothing()
-	if p.IsError() {
-		return exec.AsValue(errors.Wrap(p, "Wrong signature for 'fileset'"))
-	}
-
-	base, err := e.Loader.Path(".")
-	if err != nil {
-		return exec.AsValue(fmt.Errorf("failed to resolve path %s with loader: %s", in.String(), err))
-	}
-	out, err := filepathx.Glob(path.Join(base, in.String()))
-	if err != nil {
-		return exec.AsValue(fmt.Errorf("failed to traverse %s: %s", in.String(), err))
-	}
-	return exec.AsValue(out)
-}
-
 func filterFile(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec.Value {
 	if in.IsError() {
 		return in
@@ -1738,7 +1711,7 @@ func filterFile(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec.V
 		}
 	}
 
-	out, err := ioutil.ReadFile(path)
+	out, err := os.ReadFile(path)
 	if err != nil {
 		return exec.AsValue(fmt.Errorf("failed to read file at path %s: %s", path, err))
 	}

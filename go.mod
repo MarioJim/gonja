@@ -11,7 +11,6 @@ require (
 	github.com/sirupsen/logrus v1.9.3
 	github.com/stretchr/testify v1.8.4
 	github.com/x-cray/logrus-prefixed-formatter v0.5.2
-	github.com/yargevad/filepathx v1.0.0
 	golang.org/x/exp v0.0.0-20230807204917-050eac23e9de
 	gopkg.in/yaml.v3 v3.0.1
 )

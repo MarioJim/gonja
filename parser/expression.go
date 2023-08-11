@@ -97,9 +97,6 @@ func (p *Parser) ParseExpressionNode() (nodes.Node, error) {
 			if err != nil {
 				return nil, err
 			}
-			if expr == nil {
-				return nil, p.Error("Expected an alternative", p.Current())
-			}
 			node.Alternative = alternative
 		}
 	}

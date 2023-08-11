@@ -11,7 +11,6 @@ import (
 	"regexp"
 	"sort"
 	"strings"
-	"time"
 	"unicode"
 	"unicode/utf8"
 
@@ -24,10 +23,6 @@ import (
 	"github.com/MarioJim/gonja/exec"
 	"github.com/MarioJim/gonja/utils"
 )
-
-func init() {
-	rand.Seed(time.Now().Unix())
-}
 
 // Filters export all builtin filters
 var Filters = exec.FilterSet{

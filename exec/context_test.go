@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var ctxData = map[string]interface{}{
+var ctxData = map[string]any{
 	"nil":    nil,
 	"string": "Hello World",
 	"int":    42,
@@ -21,7 +21,7 @@ var ctxData = map[string]interface{}{
 
 var ctxCases = []struct {
 	name     string
-	value    interface{}
+	value    any
 	asString string
 	flags    flags
 }{
@@ -127,7 +127,7 @@ func TestFuncContext(t *testing.T) {
 // 			}()
 // 			assert := assert.New(t)
 
-// 			data := map[string]interface{}{"value": test.value}
+// 			data := map[string]any{"value": test.value}
 // 			value := exec.AsValue(data["value"])
 
 // 			assert.Equal(test.asString, value.String())
@@ -142,7 +142,7 @@ func TestFuncContext(t *testing.T) {
 
 // var getattrCases = []struct {
 // 	name     string
-// 	value    interface{}
+// 	value    any
 // 	attr     string
 // 	found    bool
 // 	asString string
@@ -150,7 +150,7 @@ func TestFuncContext(t *testing.T) {
 // }{
 // 	{"nil", nil, "missing", false, "", flags{IsError: true}},
 // 	{"attr found", testStruct{"test"}, "Attr", true, "test", flags{IsString: true, IsTrue: true}},
-// 	{"item", map[string]interface{}{"Attr": "test"}, "Attr", false, "", flags{IsError: true}},
+// 	{"item", map[string]any{"Attr": "test"}, "Attr", false, "", flags{IsError: true}},
 // }
 
 // func TestValueGetAttr(t *testing.T) {
@@ -185,14 +185,14 @@ func TestFuncContext(t *testing.T) {
 
 // var getitemCases = []struct {
 // 	name     string
-// 	value    interface{}
-// 	key      interface{}
+// 	value    any
+// 	key      any
 // 	found    bool
 // 	asString string
 // 	flags    flags
 // }{
 // 	{"nil", nil, "missing", false, "", flags{IsError: true}},
-// 	{"item found", map[string]interface{}{"Attr": "test"}, "Attr", true, "test", flags{IsString: true, IsTrue: true}},
+// 	{"item found", map[string]any{"Attr": "test"}, "Attr", true, "test", flags{IsString: true, IsTrue: true}},
 // 	{"attr", testStruct{"test"}, "Attr", false, "", flags{IsError: true}},
 // }
 

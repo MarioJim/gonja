@@ -26,14 +26,14 @@ type Value struct {
 // Example:
 //
 //	AsValue("my string")
-func AsValue(i interface{}) *Value {
+func AsValue(i any) *Value {
 	return &Value{
 		Val: reflect.ValueOf(i),
 	}
 }
 
 // AsSafeValue works like AsValue, but does not apply the 'escape' filter.
-func AsSafeValue(i interface{}) *Value {
+func AsSafeValue(i any) *Value {
 	return &Value{
 		Val:  reflect.ValueOf(i),
 		Safe: true,
@@ -120,7 +120,7 @@ func (v *Value) Error() string {
 	return ""
 }
 
-func (v *Value) ToGoSimpleType(allowInterfaceKeys bool) interface{} {
+func (v *Value) ToGoSimpleType(allowInterfaceKeys bool) any {
 	switch {
 	case v.IsError():
 		return errors.New(v.Error())
@@ -136,7 +136,7 @@ func (v *Value) ToGoSimpleType(allowInterfaceKeys bool) interface{} {
 		return v.String()
 	case v.IsList():
 		var err error
-		list := make([]interface{}, 0)
+		list := make([]any, 0)
 		v.Iterate(func(_, _ int, element, _ *Value) bool {
 			casted := element.ToGoSimpleType(allowInterfaceKeys)
 			var isError bool
@@ -152,7 +152,7 @@ func (v *Value) ToGoSimpleType(allowInterfaceKeys bool) interface{} {
 		return list
 	case v.IsIterable() && allowInterfaceKeys:
 		var err error
-		object := make(map[interface{}]interface{})
+		object := make(map[any]any)
 		v.Iterate(func(_, _ int, key, value *Value) bool {
 			var isError bool
 			castedKey := key.ToGoSimpleType(allowInterfaceKeys)
@@ -172,7 +172,7 @@ func (v *Value) ToGoSimpleType(allowInterfaceKeys bool) interface{} {
 		return object
 	case v.IsIterable() && !allowInterfaceKeys:
 		var err error
-		object := make(map[string]interface{})
+		object := make(map[string]any)
 		v.Iterate(func(_, _ int, key, value *Value) bool {
 			var isError bool
 			castedValue := value.ToGoSimpleType(allowInterfaceKeys)
@@ -720,7 +720,7 @@ func (v *Value) IterateOrder(fn func(idx, count int, key, value *Value) bool, em
 }
 
 // Interface gives you access to the underlying value.
-func (v *Value) Interface() interface{} {
+func (v *Value) Interface() any {
 	if v.Val.IsValid() {
 		return v.Val.Interface()
 	}
@@ -773,7 +773,7 @@ func (v *Value) Items() []*Pair {
 	return out
 }
 
-func ToValue(data interface{}) *Value {
+func ToValue(data any) *Value {
 	var isSafe bool
 	// if data == nil {
 	// 	return AsValue(nil), nil
@@ -859,7 +859,7 @@ func (v *Value) Getattr(name string) (*Value, bool) {
 	return AsValue(nil), false // Attr not found
 }
 
-func (v *Value) Getitem(key interface{}) (*Value, bool) {
+func (v *Value) Getitem(key any) (*Value, bool) {
 	if v.IsNil() {
 		return AsValue(errors.New(`Can't use Getitem on None`)), false
 	}
@@ -919,7 +919,7 @@ func (v *Value) Get(key string) (*Value, bool) {
 	return value, found
 }
 
-func (v *Value) Set(key *Value, value interface{}) error {
+func (v *Value) Set(key *Value, value any) error {
 	if v.IsNil() {
 		return errors.New(`Can't set attribute or item on None`)
 	}

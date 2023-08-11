@@ -29,7 +29,7 @@ func (va *VarArgs) First() *Value {
 }
 
 // GetKwarg gets a keyword arguments with fallback on default value
-func (va *VarArgs) GetKwarg(key string, fallback interface{}) *Value {
+func (va *VarArgs) GetKwarg(key string, fallback any) *Value {
 	value, ok := va.KwArgs[key]
 	if ok {
 		return value
@@ -39,7 +39,7 @@ func (va *VarArgs) GetKwarg(key string, fallback interface{}) *Value {
 
 type KwArg struct {
 	Name    string
-	Default interface{}
+	Default any
 }
 
 // Expect validates VarArgs against an expected signature

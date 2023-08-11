@@ -150,14 +150,14 @@ func filterBatch(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec.
 		return exec.AsValue(errors.Wrap(p, "Wrong signature for 'batch'"))
 	}
 	size := p.First().Integer()
-	out := make([]interface{}, 0)
-	var row []interface{}
+	out := make([]any, 0)
+	var row []any
 	in.Iterate(func(idx, count int, key, value *exec.Value) bool {
 		if math.Mod(float64(idx), float64(size)) == 0 {
 			if row != nil {
 				out = append(out, exec.AsValue(row).Interface())
 			}
-			row = make([]interface{}, 0)
+			row = make([]any, 0)
 		}
 		row = append(row, key.Interface())
 		return true
@@ -211,17 +211,17 @@ func filterCenter(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec
 		in.String(), strings.Repeat(" ", right)))
 }
 
-func sortByKey(in *exec.Value, caseSensitive bool, reverse bool) [][2]interface{} {
-	out := make([][2]interface{}, 0)
+func sortByKey(in *exec.Value, caseSensitive bool, reverse bool) [][2]any {
+	out := make([][2]any, 0)
 	in.IterateOrder(func(idx, count int, key, value *exec.Value) bool {
-		out = append(out, [2]interface{}{key.Interface(), value.Interface()})
+		out = append(out, [2]any{key.Interface(), value.Interface()})
 		return true
 	}, func() {}, reverse, true, caseSensitive)
 	return out
 }
 
-func sortByValue(in *exec.Value, caseSensitive, reverse bool) [][2]interface{} {
-	out := make([][2]interface{}, 0)
+func sortByValue(in *exec.Value, caseSensitive, reverse bool) [][2]any {
+	out := make([][2]any, 0)
 	items := in.Items()
 	var sorter func(i, j int) bool
 	switch {
@@ -244,7 +244,7 @@ func sortByValue(in *exec.Value, caseSensitive, reverse bool) [][2]interface{} {
 	}
 	sort.Slice(items, sorter)
 	for _, item := range items {
-		out = append(out, [2]interface{}{item.Key.Interface(), item.Value.Interface()})
+		out = append(out, [2]any{item.Key.Interface(), item.Value.Interface()})
 	}
 	return out
 }
@@ -368,7 +368,7 @@ func filterFormat(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec
 	if in.IsError() {
 		return in
 	}
-	args := []interface{}{}
+	args := []any{}
 	for _, arg := range params.Args {
 		args = append(args, arg.Interface())
 	}
@@ -384,8 +384,8 @@ func filterGroupBy(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exe
 		return exec.AsValue(errors.Wrap(p, "Wrong signature for 'groupby"))
 	}
 	field := p.First().String()
-	groups := make(map[interface{}][]interface{})
-	groupers := []interface{}{}
+	groups := make(map[any][]any)
+	groupers := []any{}
 
 	in.Iterate(func(idx, count int, key, value *exec.Value) bool {
 		attr, found := key.Get(field)
@@ -394,7 +394,7 @@ func filterGroupBy(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exe
 		}
 		lst, exists := groups[attr.Interface()]
 		if !exists {
-			lst = make([]interface{}, 0)
+			lst = make([]any, 0)
 			groupers = append(groupers, attr.Interface())
 		}
 		lst = append(lst, key.Interface())
@@ -402,9 +402,9 @@ func filterGroupBy(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exe
 		return true
 	}, func() {})
 
-	out := make([]map[string]interface{}, 0)
+	out := make([]map[string]any, 0)
 	for _, grouper := range groupers {
-		out = append(out, map[string]interface{}{
+		out = append(out, map[string]any{
 			"grouper": exec.AsValue(grouper).Interface(),
 			"list":    exec.AsValue(groups[grouper]).Interface(),
 		})
@@ -559,7 +559,7 @@ func filterList(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec.V
 		}
 		return exec.AsValue(out)
 	}
-	out := make([]interface{}, 0)
+	out := make([]any, 0)
 	in.Iterate(func(idx, count int, key, value *exec.Value) bool {
 		out = append(out, key.Interface())
 		return true
@@ -592,7 +592,7 @@ func filterMap(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec.Va
 	filter := p.KwArgs["filter"].String()
 	attribute := p.KwArgs["attribute"].String()
 	defaultVal := p.KwArgs["default"]
-	out := make([]interface{}, 0)
+	out := make([]any, 0)
 	in.Iterate(func(idx, count int, key, value *exec.Value) bool {
 		val := key
 		if len(attribute) > 0 {
@@ -775,7 +775,7 @@ func filterReject(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec
 		}
 	}
 
-	out := make([]interface{}, 0)
+	out := make([]any, 0)
 
 	in.Iterate(func(idx, count int, key, value *exec.Value) bool {
 		if !test(key) {
@@ -821,7 +821,7 @@ func filterRejectAttr(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *
 		}
 	}
 
-	out := make([]interface{}, 0)
+	out := make([]any, 0)
 	var err *exec.Value
 
 	in.Iterate(func(idx, count int, key, value *exec.Value) bool {
@@ -874,7 +874,7 @@ func filterReverse(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exe
 		}, func() {}, true, false, false)
 		return exec.AsValue(out.String())
 	}
-	out := make([]interface{}, 0)
+	out := make([]any, 0)
 	in.IterateOrder(func(idx, count int, key, value *exec.Value) bool {
 		out = append(out, key.Interface())
 		return true
@@ -947,7 +947,7 @@ func filterSelect(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec
 		}
 	}
 
-	out := make([]interface{}, 0)
+	out := make([]any, 0)
 
 	in.Iterate(func(idx, count int, key, value *exec.Value) bool {
 		if test(key) {
@@ -997,7 +997,7 @@ func filterSort(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec.V
 	}
 	reverse := p.KwArgs["reverse"].Bool()
 	caseSensitive := p.KwArgs["case_sensitive"].Bool()
-	out := make([]interface{}, 0)
+	out := make([]any, 0)
 	in.IterateOrder(func(idx, count int, key, value *exec.Value) bool {
 		out = append(out, key.Interface())
 		return true
@@ -1112,7 +1112,7 @@ func filterToJSON(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec
 
 	// Monkey patching because arrays handling is broken
 	if in.IsList() {
-		inCast := make([]interface{}, in.Len())
+		inCast := make([]any, in.Len())
 		for index := range inCast {
 			item := exec.ToValue(in.Index(index).Val)
 			inCast[index] = item.Val.Interface()
@@ -1203,8 +1203,8 @@ func filterUnique(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec
 	caseSensitive := p.KwArgs["case_sensitive"].Bool()
 	attribute := p.KwArgs["attribute"]
 
-	out := make([]interface{}, 0)
-	tracker := map[interface{}]bool{}
+	out := make([]any, 0)
+	tracker := map[any]bool{}
 	var err error
 
 	in.Iterate(func(idx, count int, key, value *exec.Value) bool {
@@ -1454,7 +1454,7 @@ func filterValues(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec
 		return exec.AsValue(errors.New("Filter 'values' was passed a non-dict type"))
 	}
 
-	out := make([]interface{}, 0)
+	out := make([]any, 0)
 	in.Iterate(func(idx, count int, key, value *exec.Value) bool {
 		out = append(out, value.Interface())
 		return true
@@ -1473,7 +1473,7 @@ func filterKeys(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec.V
 	if !in.IsDict() {
 		return exec.AsValue(errors.New("Filter 'keys' was passed a non-dict type"))
 	}
-	out := make([]interface{}, 0)
+	out := make([]any, 0)
 	in.Iterate(func(idx, count int, key, value *exec.Value) bool {
 		out = append(out, key.Interface())
 		return true
@@ -1502,7 +1502,7 @@ func filterFromJSON(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *ex
 	if !in.IsString() || in.String() == "" {
 		return exec.AsValue(errors.New("Filter 'fromjson' was passed an empty or non-string type"))
 	}
-	object := new(interface{})
+	object := new(any)
 	// first check if it's a JSON indeed
 	if err := json.Unmarshal([]byte(in.String()), object); err != nil {
 		return exec.AsValue(fmt.Errorf("failed to unmarshal %s: %s", in.String(), err))
@@ -1521,7 +1521,7 @@ func filterConcat(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec
 	if !in.IsList() {
 		return exec.AsValue(errors.New("Filter 'concat' was passed a non-list type"))
 	}
-	out := make([]interface{}, 0)
+	out := make([]any, 0)
 	in.Iterate(func(idx, count int, item, _ *exec.Value) bool {
 		out = append(out, item.Interface())
 		return true
@@ -1553,7 +1553,7 @@ func filterSplit(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec.
 
 	list := strings.Split(in.String(), delimiter)
 
-	out := make([]interface{}, len(list))
+	out := make([]any, len(list))
 	for index, item := range list {
 		out[index] = item
 	}
@@ -1602,7 +1602,7 @@ func filterInsert(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec
 	newKey := p.Args[0]
 	newValue := p.Args[1]
 
-	out := make(map[string]interface{})
+	out := make(map[string]any)
 	in.Iterate(func(idx, count int, key, value *exec.Value) bool {
 		out[key.String()] = value.Interface()
 		return true
@@ -1624,7 +1624,7 @@ func filterUnset(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec.
 	}
 	toRemove := p.Args[0]
 
-	out := make(map[string]interface{})
+	out := make(map[string]any)
 	in.Iterate(func(idx, count int, key, value *exec.Value) bool {
 		if key.String() == toRemove.String() {
 			return true
@@ -1650,7 +1650,7 @@ func filterAppend(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec
 	}
 	newItem := p.First()
 
-	out := make([]interface{}, 0)
+	out := make([]any, 0)
 	in.Iterate(func(idx, count int, item, _ *exec.Value) bool {
 		out = append(out, item.Interface())
 		return true
@@ -1672,7 +1672,7 @@ func filterFlatten(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exe
 		return exec.AsValue(errors.Wrap(p, "Wrong signature for 'flatten'"))
 	}
 
-	out := make([]interface{}, 0)
+	out := make([]any, 0)
 	in.Iterate(func(_, _ int, item, _ *exec.Value) bool {
 		if !item.IsList() {
 			out = append(out, item.Interface())
@@ -1782,7 +1782,7 @@ func filterFromYAML(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *ex
 	if !in.IsString() || in.String() == "" {
 		return exec.AsValue(errors.New("Filter 'fromyaml' was passed an empty or non-string type"))
 	}
-	object := new(interface{})
+	object := new(any)
 	if err := yaml.Unmarshal([]byte(in.String()), object); err != nil {
 		return exec.AsValue(fmt.Errorf("failed to unmarshal %s: %s", in.String(), err))
 	}
@@ -1817,7 +1817,7 @@ func filterToYAML(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec
 
 	// Monkey patching because the pipeline input parser is broken when the input is a list
 	if in.IsList() {
-		inCast := make([]interface{}, in.Len())
+		inCast := make([]any, in.Len())
 		for index := range inCast {
 			item := exec.ToValue(in.Index(index).Val)
 			inCast[index] = item.Val.Interface()
@@ -1871,7 +1871,7 @@ func filterSelectAttr(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *
 		}
 	}
 
-	out := make([]interface{}, 0)
+	out := make([]any, 0)
 	var err *exec.Value
 
 	in.Iterate(func(idx, count int, key, value *exec.Value) bool {
@@ -1925,7 +1925,7 @@ func filterFromTOML(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *ex
 	if !in.IsString() || in.String() == "" {
 		return exec.AsValue(errors.New("Filter 'fromtoml' was passed an empty or non-string type"))
 	}
-	object := new(interface{})
+	object := new(any)
 	if err := toml.Unmarshal([]byte(in.String()), object); err != nil {
 		return exec.AsValue(fmt.Errorf("failed to unmarshal from toml %s: %s", in.String(), err))
 	}

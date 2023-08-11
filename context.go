@@ -4,9 +4,9 @@ package gonja
 // 	"github.com/MarioJim/gonja/exec"
 // )
 
-type Context map[string]interface{}
+type Context map[string]any
 
-// func (c Context) Get(name string) interface{} {
+// func (c Context) Get(name string) any {
 // 	return nil
 // }
 

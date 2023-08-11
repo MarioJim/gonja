@@ -597,7 +597,7 @@ type asserter interface {
 }
 
 type specs struct {
-	typ   interface{}
+	typ   any
 	attrs attrs
 }
 
@@ -614,7 +614,7 @@ func (specs specs) assert(t *testing.T, value reflect.Value) {
 }
 
 type val struct {
-	value interface{}
+	value any
 }
 
 func (val val) assert(t *testing.T, value reflect.Value) {
@@ -649,7 +649,7 @@ func (val val) assert(t *testing.T, value reflect.Value) {
 	}
 }
 
-func _literal(typ interface{}, value interface{}) asserter {
+func _literal(typ any, value any) asserter {
 	return specs{typ, attrs{
 		"Val": val{value},
 	}}

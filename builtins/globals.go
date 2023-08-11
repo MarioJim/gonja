@@ -7,7 +7,7 @@ import (
 	"github.com/MarioJim/gonja/utils"
 )
 
-var Globals = exec.NewContext(map[string]interface{}{
+var Globals = exec.NewContext(map[string]any{
 	"cycler":    Cycler,
 	"dict":      Dict,
 	"joiner":    Joiner,
@@ -61,7 +61,7 @@ func Dict(va *exec.VarArgs) *exec.Value {
 type cycler struct {
 	values  []string
 	idx     int
-	getters map[string]interface{}
+	getters map[string]any
 }
 
 func (c *cycler) Reset() {
@@ -84,7 +84,7 @@ func Cycler(va *exec.VarArgs) *exec.Value {
 	for _, arg := range va.Args {
 		c.values = append(c.values, arg.String())
 	}
-	c.getters = map[string]interface{}{
+	c.getters = map[string]any{
 		"next":  c.Next,
 		"reset": c.Reset,
 	}
@@ -115,10 +115,10 @@ func Joiner(va *exec.VarArgs) *exec.Value {
 	return exec.AsValue(j.String)
 }
 
-// type namespace map[string]interface{}
+// type namespace map[string]any
 
-func Namespace(va *exec.VarArgs) map[string]interface{} {
-	ns := map[string]interface{}{}
+func Namespace(va *exec.VarArgs) map[string]any {
+	ns := map[string]any{}
 	for key, value := range va.KwArgs {
 		ns[key] = value
 	}

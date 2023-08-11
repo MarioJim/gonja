@@ -1,16 +1,16 @@
 package exec
 
 type Context struct {
-	data   map[string]interface{}
+	data   map[string]any
 	parent *Context
 }
 
-func NewContext(data map[string]interface{}) *Context {
+func NewContext(data map[string]any) *Context {
 	return &Context{data: data}
 }
 
 func EmptyContext() *Context {
-	return &Context{data: map[string]interface{}{}}
+	return &Context{data: map[string]any{}}
 }
 
 func (ctx *Context) Has(name string) bool {
@@ -21,7 +21,7 @@ func (ctx *Context) Has(name string) bool {
 	return exists
 }
 
-func (ctx *Context) Get(name string) (interface{}, bool) {
+func (ctx *Context) Get(name string) (any, bool) {
 	value, exists := ctx.data[name]
 	if exists {
 		return value, true
@@ -32,19 +32,19 @@ func (ctx *Context) Get(name string) (interface{}, bool) {
 	}
 }
 
-func (ctx *Context) Set(name string, value interface{}) {
+func (ctx *Context) Set(name string, value any) {
 	ctx.data[name] = value
 }
 
 func (ctx *Context) Inherit() *Context {
 	return &Context{
-		data:   map[string]interface{}{},
+		data:   map[string]any{},
 		parent: ctx,
 	}
 }
 
 // Update updates this context with the key/value pairs from a map.
-func (ctx *Context) Update(other map[string]interface{}) *Context {
+func (ctx *Context) Update(other map[string]any) *Context {
 	for k, v := range other {
 		ctx.data[k] = v
 	}

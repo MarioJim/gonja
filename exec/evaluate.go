@@ -109,7 +109,7 @@ func (e *Evaluator) evalBinaryExpression(node *nodes.BinaryExpression) *Value {
 				return AsValue(errors.Wrapf(right, `Unable to concatenate list to %s`, node.Right))
 			}
 
-			v := &Value{Val: reflect.ValueOf([]interface{}{})}
+			v := &Value{Val: reflect.ValueOf([]any{})}
 
 			for ix := 0; ix < left.getResolvedValue().Len(); ix++ {
 				v.Val = reflect.Append(v.Val, left.getResolvedValue().Index(ix))
@@ -288,7 +288,7 @@ func (e *Evaluator) evalGetitem(node *nodes.Getitem) *Value {
 	}
 
 	argument := e.Eval(node.Arg)
-	var key interface{}
+	var key any
 	switch {
 	case argument != nil && argument.IsString():
 		key = argument.String()

@@ -76,7 +76,7 @@ func Lex(input string) *Stream {
 // errorf returns an error token and terminates the scan
 // by passing back a nil pointer that will be the next
 // state, terminating Lexer.Run.
-func (l *Lexer) errorf(format string, args ...interface{}) lexFn {
+func (l *Lexer) errorf(format string, args ...any) lexFn {
 	l.Tokens <- &Token{
 		Type: Error,
 		Val:  fmt.Sprintf(format, args...),

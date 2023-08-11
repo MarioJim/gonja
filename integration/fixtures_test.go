@@ -69,7 +69,7 @@ func (p *post) String() string {
 
 var Fixtures = gonja.Context{
 	"number": 11,
-	"simple": map[string]interface{}{
+	"simple": map[string]any{
 		"number":                   42,
 		"name":                     "john doe",
 		"included_file":            "INCLUDES.helper",
@@ -94,7 +94,7 @@ Yep!`,
 		"multiple_item_list": []int{1, 1, 2, 3, 5, 8, 13, 21, 34, 55},
 		"unsorted_int_list":  []int{192, 581, 22, 1, 249, 9999, 1828591, 8271},
 		"fixed_item_list":    [...]int{1, 2, 3, 4},
-		"misc_list":          []interface{}{"Hello", 99, 3.14, "good"},
+		"misc_list":          []any{"Hello", 99, 3.14, "good"},
 		"escape_text":        "This is \\a Test. \"Yep\". 'Yep'.",
 		"xss":                "<script>alert(\"uh oh\");</script>",
 		"intmap": map[int]string{
@@ -121,10 +121,10 @@ Yep!`,
 		"func_add": func(a, b int) int {
 			return a + b
 		},
-		"func_add_iface": func(a, b interface{}) interface{} {
+		"func_add_iface": func(a, b any) any {
 			return a.(int) + b.(int)
 		},
-		"func_variadic": func(msg string, args ...interface{}) string {
+		"func_variadic": func(msg string, args ...any) string {
 			return fmt.Sprintf(msg, args...)
 		},
 		"func_variadic_sum_int": func(args ...int) int {
@@ -166,7 +166,7 @@ Yep!`,
 			return exec.AsSafeValue(str)
 		},
 	},
-	"complex": map[string]interface{}{
+	"complex": map[string]any{
 		"user": &user{
 			Name:      "john doe",
 			Validated: true,
@@ -177,7 +177,7 @@ Yep!`,
 			Created: time2,
 		},
 		"comments": []*comment{
-			&comment{
+			{
 				Author: &user{
 					Name:      "user1",
 					Validated: true,
@@ -185,7 +185,7 @@ Yep!`,
 				Date: time1,
 				Text: "\"gonja is nice!\"",
 			},
-			&comment{
+			{
 				Author: &user{
 					Name:      "user2",
 					Validated: true,
@@ -193,7 +193,7 @@ Yep!`,
 				Date: time2,
 				Text: "comment2 with <script>unsafe</script> tags in it",
 			},
-			&comment{
+			{
 				Author: &user{
 					Name:      "user3",
 					Validated: false,
@@ -203,7 +203,7 @@ Yep!`,
 			},
 		},
 		"comments2": []*comment{
-			&comment{
+			{
 				Author: &user{
 					Name:      "user1",
 					Validated: true,
@@ -211,7 +211,7 @@ Yep!`,
 				Date: time2,
 				Text: "\"gonja is nice!\"",
 			},
-			&comment{
+			{
 				Author: &user{
 					Name:      "user1",
 					Validated: true,
@@ -219,7 +219,7 @@ Yep!`,
 				Date: time1,
 				Text: "comment2 with <script>unsafe</script> tags in it",
 			},
-			&comment{
+			{
 				Author: &user{
 					Name:      "user3",
 					Validated: false,

@@ -47,7 +47,7 @@ func (f *flags) assert(t *testing.T, value *exec.Value) {
 
 var valueCases = []struct {
 	name     string
-	value    interface{}
+	value    any
 	asString string
 	flags    flags
 }{
@@ -125,7 +125,7 @@ func TestValueFromMap(t *testing.T) {
 			}()
 			assert := assert.New(t)
 
-			data := map[string]interface{}{"value": test.value}
+			data := map[string]any{"value": test.value}
 			value := exec.AsValue(data["value"])
 
 			assert.Equal(test.asString, value.String())
@@ -144,7 +144,7 @@ func (t testStruct) String() string {
 
 var getattrCases = []struct {
 	name     string
-	value    interface{}
+	value    any
 	attr     string
 	found    bool
 	asString string
@@ -153,7 +153,7 @@ var getattrCases = []struct {
 	{"nil", nil, "missing", false, "", flags{IsError: true}},
 	{"attr found", testStruct{"test"}, "Attr", true, "test", flags{IsString: true, IsTrue: true, IsIterable: true}},
 	{"attr not found", testStruct{"test"}, "Missing", false, "", flags{IsNil: true}},
-	{"item", map[string]interface{}{"Attr": "test"}, "Attr", false, "", flags{IsNil: true}},
+	{"item", map[string]any{"Attr": "test"}, "Attr", false, "", flags{IsNil: true}},
 }
 
 func TestValueGetAttr(t *testing.T) {
@@ -188,15 +188,15 @@ func TestValueGetAttr(t *testing.T) {
 
 var getitemCases = []struct {
 	name     string
-	value    interface{}
-	key      interface{}
+	value    any
+	key      any
 	found    bool
 	asString string
 	flags    flags
 }{
 	{"nil", nil, "missing", false, "", flags{IsError: true}},
-	{"item found", map[string]interface{}{"Attr": "test"}, "Attr", true, "test", flags{IsString: true, IsTrue: true, IsIterable: true}},
-	{"item not found", map[string]interface{}{"Attr": "test"}, "Missing", false, "test", flags{IsNil: true}},
+	{"item found", map[string]any{"Attr": "test"}, "Attr", true, "test", flags{IsString: true, IsTrue: true, IsIterable: true}},
+	{"item not found", map[string]any{"Attr": "test"}, "Missing", false, "test", flags{IsNil: true}},
 	{"attr", testStruct{"test"}, "Attr", false, "", flags{IsNil: true}},
 	{"dict found", &exec.Dict{[]*exec.Pair{
 		{exec.AsValue("key"), exec.AsValue("value")},
@@ -236,9 +236,9 @@ func TestValueGetitem(t *testing.T) {
 
 var setCases = []struct {
 	name     string
-	value    interface{}
+	value    any
 	attr     string
-	set      interface{}
+	set      any
 	error    bool
 	asString string
 }{
@@ -249,7 +249,7 @@ var setCases = []struct {
 	{"missing attr on struct by value", testStruct{"test"}, "Missing", "value", true, "test"},
 	{
 		"existing key on map",
-		map[string]interface{}{"Attr": "test"},
+		map[string]any{"Attr": "test"},
 		"Attr",
 		"value",
 		false,
@@ -257,7 +257,7 @@ var setCases = []struct {
 	},
 	{
 		"new key on map",
-		map[string]interface{}{"Attr": "test"},
+		map[string]any{"Attr": "test"},
 		"New",
 		"value",
 		false,
@@ -291,7 +291,7 @@ func TestValueSet(t *testing.T) {
 
 var valueKeysCases = []struct {
 	name     string
-	value    interface{}
+	value    any
 	asString string
 	isError  bool
 }{

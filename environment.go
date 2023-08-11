@@ -30,7 +30,7 @@ func NewEnvironment(cfg *config.Config, loader loaders.Loader) *Environment {
 	env.Statements.Update(builtins.Statements)
 	env.Tests.Update(builtins.Tests)
 	env.Globals.Merge(builtins.Globals)
-	env.Globals.Set("gonja", map[string]interface{}{
+	env.Globals.Set("gonja", map[string]any{
 		"version": VERSION,
 	})
 	return env

@@ -54,7 +54,7 @@ func NewTemplate(name string, source string, cfg *EvalConfig) (*Template, error)
 	return t, nil
 }
 
-func (tpl *Template) execute(ctx map[string]interface{}, out io.StringWriter) error {
+func (tpl *Template) execute(ctx map[string]any, out io.StringWriter) error {
 	exCtx := tpl.Env.Globals.Inherit()
 	exCtx.Update(ctx)
 
@@ -70,7 +70,7 @@ func (tpl *Template) execute(ctx map[string]interface{}, out io.StringWriter) er
 	return nil
 }
 
-func (tpl *Template) newBufferAndExecute(ctx map[string]interface{}) (*bytes.Buffer, error) {
+func (tpl *Template) newBufferAndExecute(ctx map[string]any) (*bytes.Buffer, error) {
 	var buffer bytes.Buffer
 	// Create output buffer
 	// We assume that the rendered template will be 30% larger
@@ -106,7 +106,7 @@ func (tpl *Template) newBufferAndExecute(ctx map[string]interface{}) (*bytes.Buf
 // // }
 
 // Executes the template and returns the rendered template as a []byte
-func (tpl *Template) ExecuteBytes(ctx map[string]interface{}) ([]byte, error) {
+func (tpl *Template) ExecuteBytes(ctx map[string]any) ([]byte, error) {
 	buffer, err := tpl.newBufferAndExecute(ctx)
 	if err != nil {
 		return nil, err
@@ -115,7 +115,7 @@ func (tpl *Template) ExecuteBytes(ctx map[string]interface{}) ([]byte, error) {
 }
 
 // Executes the template and returns the rendered template as a string
-func (tpl *Template) Execute(ctx map[string]interface{}) (string, error) {
+func (tpl *Template) Execute(ctx map[string]any) (string, error) {
 	var b strings.Builder
 	err := tpl.execute(ctx, &b)
 	if err != nil {

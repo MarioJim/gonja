@@ -31,7 +31,6 @@ func testEnv(root string) *gonja.Environment {
 func GlobTemplateTests(t *testing.T, root string, env *gonja.Environment) {
 	pattern := filepath.Join(root, `*.tpl`)
 	matches, err := filepath.Glob(pattern)
-	// env := TestEnv(root)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -63,7 +62,6 @@ func GlobTemplateTests(t *testing.T, root string, env *gonja.Environment) {
 			if err != nil {
 				t.Fatalf("Error on Execute('%s'):\n%s", filename, err.Error())
 			}
-			// rendered = testTemplateFixes.fixIfNeeded(filename, rendered)
 			if !bytes.Equal(expected, rendered) {
 				diff := difflib.UnifiedDiff{
 					A:        difflib.SplitLines(string(expected)),

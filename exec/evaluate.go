@@ -359,8 +359,6 @@ func (e *Evaluator) evalCall(node *nodes.Call) *Value {
 		return AsValue(errors.Errorf(`%s is not callable`, node.Func))
 	}
 
-	// current := reflect.ValueOf(fn) // Get the initial value
-
 	var current reflect.Value
 	var isSafe bool
 
@@ -429,7 +427,6 @@ func (e *Evaluator) evalVarArgs(node *nodes.Call) ([]reflect.Value, error) {
 		}
 		params.KwArgs[key] = value
 	}
-	// va := AsValue(VarArgs{})
 	return []reflect.Value{reflect.ValueOf(params)}, nil
 }
 

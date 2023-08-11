@@ -33,9 +33,6 @@ type LoopInfos struct {
 	revindex0  int
 	first      bool
 	last       bool
-	length     int
-	depth      int
-	depth0     int
 	PrevItem   *exec.Value
 	NextItem   *exec.Value
 	_lastValue *exec.Value

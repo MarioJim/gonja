@@ -12,7 +12,6 @@ import (
 )
 
 type IncludeStmt struct {
-	// tpl               *Template
 	Location      *tokens.Token
 	Filename      string
 	FilenameExpr  nodes.Expression
@@ -60,10 +59,6 @@ func (stmt *IncludeStmt) Execute(r *exec.Renderer, tag *nodes.StatementBlock) er
 }
 
 type IncludeEmptyStmt struct{}
-
-// func (node *IncludeEmptyStmt) Execute(ctx *ExecutionContext, writer TemplateWriter) *Error {
-// 	return nil
-// }
 
 func includeParser(p *parser.Parser, args *parser.Parser) (nodes.Statement, error) {
 	stmt := &IncludeStmt{

@@ -107,7 +107,6 @@ func (stmt *FromImportStmt) Execute(r *exec.Renderer, tag *nodes.StatementBlock)
 func importParser(p *parser.Parser, args *parser.Parser) (nodes.Statement, error) {
 	stmt := &ImportStmt{
 		Location: p.Current(),
-		// Macros:   map[string]*nodes.Macro{},
 	}
 
 	if args.End() {
@@ -158,7 +157,6 @@ func fromParser(p *parser.Parser, args *parser.Parser) (nodes.Statement, error) 
 	stmt := &FromImportStmt{
 		Location: p.Current(),
 		As:       map[string]string{},
-		// Macros:   map[string]*nodes.Macro{},
 	}
 
 	if args.End() {
@@ -185,25 +183,16 @@ func fromParser(p *parser.Parser, args *parser.Parser) (nodes.Statement, error) 
 			return nil, args.Error("Expected macro name (identifier).", args.Current())
 		}
 
-		// asName := macroNameToken.Val
 		if args.MatchName("as") != nil {
 			alias := args.Match(tokens.Name)
 			if alias == nil {
 				return nil, args.Error("Expected macro alias name (identifier).", nil)
 			}
-			// asName = aliasToken.Val
 			stmt.As[alias.Val] = name.Val
 		} else {
 			stmt.As[name.Val] = name.Val
 		}
 
-		// macroInstance, has := tpl.exportedMacros[macroNameToken.Val]
-		// if !has {
-		// 	return nil, args.Error(fmt.Sprintf("Macro '%s' not found (or not exported) in '%s'.", macroNameToken.Val,
-		// 		stmt.filename), macroNameToken)
-		// }
-
-		// stmt.macros[asName] = macroInstance
 		if tok := args.MatchName("with", "without"); tok != nil {
 			if args.MatchName("context") != nil {
 				stmt.WithContext = tok.Val == "with"

@@ -82,7 +82,6 @@ type Data struct {
 
 func (d *Data) Position() *tokens.Token { return d.Data }
 
-// func (c *Comment) End() token.Pos { return token.Pos(int(c.Slash) + len(c.Text)) }
 func (c *Data) String() string {
 	return fmt.Sprintf("data(%s)", u.Ellipsis(c.Data.Val, 20))
 }
@@ -96,7 +95,6 @@ type Comment struct {
 
 func (c *Comment) Position() *tokens.Token { return c.Start }
 
-// func (c *Comment) End() token.Pos { return token.Pos(int(c.Slash) + len(c.Text)) }
 func (c *Comment) String() string {
 	return fmt.Sprintf("comment(%s)", u.Ellipsis(c.Text, 20))
 }
@@ -139,8 +137,6 @@ type FilterCall struct {
 	Name   string
 	Args   []Expression
 	Kwargs map[string]Expression
-
-	// filterFunc FilterFunction
 }
 
 type TestExpression struct {
@@ -161,8 +157,6 @@ type TestCall struct {
 	Name   string
 	Args   []Expression
 	Kwargs map[string]Expression
-
-	// testFunc TestFunction
 }
 
 func (tc *TestCall) String() string {
@@ -286,9 +280,8 @@ type VariablePart struct {
 	I    int
 
 	IsFunctionCall bool
-	// callingArgs    []functionCallArgument // needed for a function call, represents all argument nodes (Node supports nested function calls)
-	Args   []Expression
-	Kwargs map[string]Expression
+	Args           []Expression
+	Kwargs         map[string]Expression
 }
 
 func (vp *VariablePart) String() string {

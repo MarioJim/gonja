@@ -11,7 +11,6 @@ import (
 
 type RawStmt struct {
 	Data *nodes.Data
-	// Content string
 }
 
 func (stmt *RawStmt) Position() *tokens.Token { return stmt.Data.Position() }

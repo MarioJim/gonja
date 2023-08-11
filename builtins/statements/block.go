@@ -24,7 +24,6 @@ func (stmt *BlockStmt) String() string {
 }
 
 func (stmt *BlockStmt) Execute(r *exec.Renderer, tag *nodes.StatementBlock) error {
-	// root, block := r.Root.GetBlock(stmt.Name)
 	blocks := r.Root.GetBlocks(stmt.Name)
 	block, blocks := blocks[0], blocks[1:]
 

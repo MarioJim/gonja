@@ -591,8 +591,6 @@ func (v *Value) IterateOrder(fn func(idx, count int, key, value *Value) bool, em
 
 		itemCount := resolved.Len()
 		for i := 0; i < itemCount; i++ {
-			// value := resolved.Index(i)
-
 			items = append(items, ToValue(resolved.Index(i)))
 		}
 
@@ -775,9 +773,6 @@ func (v *Value) Items() []*Pair {
 
 func ToValue(data any) *Value {
 	var isSafe bool
-	// if data == nil {
-	// 	return AsValue(nil), nil
-	// }
 	value, ok := data.(*Value)
 	if ok {
 		return value

@@ -63,47 +63,22 @@ func (tpl *Template) execute(ctx map[string]any, out io.StringWriter) error {
 
 	err := renderer.Execute()
 	if err != nil {
-		return errors.Wrap(err, `Unable to Execute template`)
+		return errors.Wrap(err, `Unable to execute template`)
 	}
-	out.WriteString(renderer.String())
+	if _, err = out.WriteString(renderer.String()); err != nil {
+		return errors.Wrap(err, `Unable to execute template`)
+	}
 
 	return nil
 }
 
 func (tpl *Template) newBufferAndExecute(ctx map[string]any) (*bytes.Buffer, error) {
 	var buffer bytes.Buffer
-	// Create output buffer
-	// We assume that the rendered template will be 30% larger
-	// buffer := bytes.NewBuffer(make([]byte, 0, int(float64(tpl.size)*1.3)))
 	if err := tpl.execute(ctx, &buffer); err != nil {
 		return nil, err
 	}
 	return &buffer, nil
 }
-
-// // Executes the template with the given context and writes to writer (io.Writer)
-// // on success. Context can be nil. Nothing is written on error; instead the error
-// // is being returned.
-// func (tpl *Template) ExecuteWriter(ctx *Context, writer io.Writer) error {
-// 	buf, err := tpl.newBufferAndExecute(ctx)
-// 	if err != nil {
-// 		return err
-// 	}
-// 	_, err = buf.WriteTo(writer)
-// 	if err != nil {
-// 		return err
-// 	}
-// 	return nil
-// }
-
-// // // Same as ExecuteWriter. The only difference between both functions is that
-// // // this function might already have written parts of the generated template in the
-// // // case of an execution error because there's no intermediate buffer involved for
-// // // performance reasons. This is handy if you need high performance template
-// // // generation or if you want to manage your own pool of buffers.
-// // func (tpl *Template) ExecuteWriterUnbuffered(ctx *Context, writer io.Writer) error {
-// // 	return tpl.newTemplateWriterAndExecute(ctx, writer)
-// // }
 
 // Executes the template and returns the rendered template as a []byte
 func (tpl *Template) ExecuteBytes(ctx map[string]any) ([]byte, error) {

@@ -91,33 +91,15 @@ func (fs *FilesystemLoader) Path(name string) (string, error) {
 		return name, nil
 	}
 
-	// root := fs.root
 	if fs.root == "" {
 		root, err := os.Getwd()
 		if err != nil {
 			return "", err
 		}
 		return filepath.Join(root, name), nil
-	} else {
-		return filepath.Join(fs.root, name), nil
 	}
 
-	// // Our own base dir has always priority; if there's none
-	// // we use the path provided in base.
-	// var err error
-	// if fs.root == "" {
-	// 	if base == "" {
-	// 		base, err = os.Getwd()
-	// 		if err != nil {
-	// 			panic(err)
-	// 		}
-	// 		return filepath.Join(base, name)
-	// 	}
-
-	// 	return filepath.Join(filepath.Dir(base), name)
-	// }
-
-	// return filepath.Join(fs.root, name)
+	return filepath.Join(fs.root, name), nil
 }
 
 // SandboxedFilesystemLoader is still WIP.
@@ -135,37 +117,3 @@ func NewSandboxedFilesystemLoader(root string) (*SandboxedFilesystemLoader, erro
 		FilesystemLoader: fs,
 	}, nil
 }
-
-// Move sandbox to a virtual fs
-
-/*
-if len(set.SandboxDirectories) > 0 {
-    defer func() {
-        // Remove any ".." or other crap
-        resolvedPath = filepath.Clean(resolvedPath)
-
-        // Make the path absolute
-        absPath, err := filepath.Abs(resolvedPath)
-        if err != nil {
-            panic(err)
-        }
-        resolvedPath = absPath
-
-        // Check against the sandbox directories (once one pattern matches, we're done and can allow it)
-        for _, pattern := range set.SandboxDirectories {
-            matched, err := filepath.Match(pattern, resolvedPath)
-            if err != nil {
-                panic("Wrong sandbox directory match pattern (see http://golang.org/pkg/path/filepath/#Match).")
-            }
-            if matched {
-                // OK!
-                return
-            }
-        }
-
-        // No pattern matched, we have to log+deny the request
-        set.logf("Access attempt outside of the sandbox directories (blocked): '%s'", resolvedPath)
-        resolvedPath = ""
-    }()
-}
-*/

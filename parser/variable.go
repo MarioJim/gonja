@@ -1,8 +1,6 @@
 package parser
 
 import (
-	// "fmt"
-
 	"strconv"
 	"strings"
 
@@ -153,7 +151,6 @@ func (p *Parser) parseTuple() (nodes.Expression, error) {
 
 	if p.Match(tokens.Rparen) == nil {
 		return nil, p.Error("Unbalanced parenthesis", t)
-		// return nil, p.Error("Expected )", p.Current())
 	}
 
 	if len(list) > 1 || trailingComa {
@@ -320,9 +317,6 @@ func (p *Parser) ParseVariable() (nodes.Expression, error) {
 				Args:     []nodes.Expression{},
 				Kwargs:   map[string]nodes.Expression{},
 			}
-			// if p.Peek(tokens.VariableEnd) != nil {
-			// 	return nil, p.Error("Filter parameter required after '('.", nil)
-			// }
 
 			for p.Match(tokens.Comma) != nil || p.Match(tokens.Rparen) == nil {
 				// TODO: Handle multiple args and kwargs

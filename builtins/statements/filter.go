@@ -1,9 +1,6 @@
 package statements
 
 import (
-	// "bytes"
-
-	// "github.com/MarioJim/gonja/exec"
 	"fmt"
 	"strings"
 
@@ -31,7 +28,6 @@ func (node *FilterStmt) Execute(r *exec.Renderer, tag *nodes.StatementBlock) err
 	var out strings.Builder
 	sub := r.Inherit()
 	sub.Out = &out
-	// temp := bytes.NewBuffer(make([]byte, 0, 1024)) // 1 KiB size
 
 	err := sub.ExecuteWrapper(node.bodyWrapper)
 	if err != nil {

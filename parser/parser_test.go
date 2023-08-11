@@ -358,14 +358,6 @@ var testCases = []struct {
 			"Arg": _literal(nodes.String{}, "item"),
 		}},
 	}}},
-	// {"variable array access", "{{ a_var[b_var] }}", specs{nodes.Output{}, attrs{
-	// 	"Expression": specs{nodes.Getitem{}, attrs{
-	// 		"Node": specs{nodes.Name{}, attrs{
-	// 			"Name": _token("a_var"),
-	// 		}},
-	// 		"Arg": val{"item"},
-	// 	}},
-	// }}},
 	{"variable and filter", "{{ a_var|safe }}", specs{nodes.Output{}, attrs{
 		"Expression": specs{nodes.FilteredExpression{}, attrs{
 			"Expression": specs{nodes.Name{}, attrs{
@@ -574,17 +566,6 @@ var testCases = []struct {
 	}}},
 }
 
-// func parseText(text string) (*nodeDocument, *Error) {
-// 	tokens, err := lex("test", text)
-// 	if err != nil {
-// 		return nil, err
-// 	}
-// 	parser := newParser("test", tokens, &Template{
-// 		set: &TemplateSet{},
-// 	})
-// 	return parser.parseDocument()
-// }
-
 func _deref(value reflect.Value) reflect.Value {
 	for (value.Kind() == reflect.Interface || value.Kind() == reflect.Ptr) && !value.IsNil() {
 		value = value.Elem()
@@ -604,7 +585,6 @@ type specs struct {
 func (specs specs) assert(t *testing.T, value reflect.Value) {
 	assert := assert.New(t)
 	value = _deref(value)
-	// t.Logf("type(expected %+v, actual %+v)", reflect.TypeOf(specs.typ), value.Type())
 	if !assert.Equal(reflect.TypeOf(specs.typ), value.Type()) {
 		return
 	}
@@ -725,7 +705,6 @@ func TestParser(t *testing.T) {
 					t.Error(err)
 				}
 			}()
-			// t.Parallel()
 			assert := assert.New(t)
 			tpl, err := parser.Parse(test.text)
 			if assert.Nil(err, "Unable to parse template: %s", err) {

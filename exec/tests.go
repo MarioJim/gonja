@@ -49,10 +49,6 @@ func (ts *TestSet) Update(other TestSet) TestSet {
 
 func (e *Evaluator) EvalTest(expr *nodes.TestExpression) *Value {
 	value := e.Eval(expr.Expression)
-	// if value.IsError() {
-	// 	return AsValue(errors.Wrapf(value, `Unable to evaluate expresion %s`, expr.Expression))
-	// }
-
 	return e.ExecuteTest(expr.Test, value)
 }
 
@@ -85,12 +81,11 @@ func (e *Evaluator) ExecuteTestByName(name string, in *Value, params *VarArgs) *
 	if !e.Tests.Exists(name) {
 		return AsValue(errors.Errorf(`Test "%s" not found`, name))
 	}
-	test, _ := (*e.Tests)[name]
+	test := (*e.Tests)[name]
 
 	result, err := test(e.Ctx, in, params)
 	if err != nil {
 		return AsValue(errors.Wrapf(err, `Unable to execute test %s`, name))
-	} else {
-		return AsValue(result)
 	}
+	return AsValue(result)
 }

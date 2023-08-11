@@ -144,7 +144,6 @@ Yep!`,
 			return exec.AsValue(s)
 		},
 		"func_with_varargs": func(params *exec.VarArgs) *exec.Value {
-			// arg := params.args[0]
 			argsAsStr := []string{}
 			for _, arg := range params.Args {
 				argsAsStr = append(argsAsStr, arg.String())

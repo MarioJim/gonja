@@ -57,9 +57,6 @@ func (e *Evaluator) EvaluateFiltered(expr *nodes.FilteredExpression) *Value {
 		}
 	}
 
-	// if value.IsError() {
-	// 	return AsValue(errors.Wrapf(value, `Unable to filter chain`, expr.Expression))
-	// }
 	return value
 }
 
@@ -90,7 +87,6 @@ func (e *Evaluator) ExecuteFilterByName(name string, in *Value, params *VarArgs)
 	if !e.Filters.Exists(name) {
 		return AsValue(errors.Errorf(`Filter "%s" not found`, name))
 	}
-	fn, _ := (*e.Filters)[name]
-
+	fn := (*e.Filters)[name]
 	return fn(e, in, params)
 }

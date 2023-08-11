@@ -1,19 +1,3 @@
 package gonja
 
-// import (
-// 	"github.com/MarioJim/gonja/exec"
-// )
-
 type Context map[string]any
-
-// func (c Context) Get(name string) any {
-// 	return nil
-// }
-
-// // Update updates this context with the key/value-pairs from another context.
-// func (c Context) Update(other exec.Context) Context {
-// 	for k, v := range other.AsMap() {
-// 		c[k] = v
-// 	}
-// 	return c
-// }

@@ -1,8 +1,6 @@
 package exec_test
 
 import (
-	// "fmt"
-
 	"testing"
 
 	"github.com/MarioJim/gonja/exec"

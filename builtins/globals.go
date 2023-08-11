@@ -115,8 +115,6 @@ func Joiner(va *exec.VarArgs) *exec.Value {
 	return exec.AsValue(j.String)
 }
 
-// type namespace map[string]any
-
 func Namespace(va *exec.VarArgs) map[string]any {
 	ns := map[string]any{}
 	for key, value := range va.KwArgs {

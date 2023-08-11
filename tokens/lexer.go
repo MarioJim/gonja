@@ -2,10 +2,7 @@ package tokens
 
 import (
 	"fmt"
-
-	// "encoding/json"
 	"regexp"
-	// "strconv"
 	"strings"
 	"unicode"
 	"unicode/utf8"
@@ -15,14 +12,11 @@ import (
 
 // EOF is an arbitraty value for End Of File
 const rEOF = -1
-const re_ENDRAW = `%s\s*%s`
 
 var escapedStrings = map[string]string{
 	`\"`: `"`,
 	`\'`: `'`,
 }
-
-// var pattern = regexp.MustCompile(`(?m)(?P<key>\w+):\s+(?P<value>\w+)$`)
 
 // lexFn represents the state of the scanner
 // as a function that returns the next state.
@@ -30,13 +24,12 @@ type lexFn func() lexFn
 
 // Lexer holds the state of the scanner.
 type Lexer struct {
-	Input string // the string being scanned.
-	Start int    // start position of this item.
-	Pos   int    // current position in the input.
-	Width int    // width of last rune read from input.
-	Line  int    // Current line in the input
-	Col   int    // Current position in the line
-	// Position Position // Current lexing position in the input
+	Input         string         // the string being scanned.
+	Start         int            // start position of this item.
+	Pos           int            // current position in the input.
+	Width         int            // width of last rune read from input.
+	Line          int            // Current line in the input
+	Col           int            // Current position in the line
 	Config        *config.Config // The lexer configuration
 	Tokens        chan *Token    // channel of scanned tokens.
 	delimiters    []rune
@@ -143,11 +136,6 @@ func (l *Lexer) processAndEmit(t Type, fn func(string) string) {
 	l.Start = l.Pos
 }
 
-// ignore skips over the pending input before this point.
-func (l *Lexer) ignore() {
-	l.Start = l.Pos
-}
-
 // backup steps back one rune.
 // Can be called only once per call of next.
 func (l *Lexer) backup() {
@@ -172,13 +160,6 @@ func (l *Lexer) accept(valid string) bool {
 	return false
 }
 
-// acceptRun consumes a run of runes from the valid set.
-func (l *Lexer) acceptRun(valid string) {
-	for strings.ContainsRune(valid, l.next()) {
-	}
-	l.backup()
-}
-
 func (l *Lexer) pushDelimiter(r rune) {
 	l.delimiters = append(l.delimiters, r)
 }
@@ -198,7 +179,6 @@ func (l *Lexer) popDelimiter(r rune) bool {
 		l.errorf(`Unbalanced delimiters, expected "%c", got "%c"`, expected, r)
 		return false
 	}
-	// l.delimiters[last] = nil // Erase element (write zero value)
 	l.delimiters = l.delimiters[:last]
 	return true
 }
@@ -260,8 +240,6 @@ func (l *Lexer) lexRaw() lexFn {
 	l.emit(Data)
 	l.rawEnd = nil
 	return l.lexBlock
-	// regexp.MustCompile(`(?m)(?P<key>\w+):\s+(?P<value>\w+)$`)
-	// idx := pattern
 }
 
 func (l *Lexer) lexComment() lexFn {
@@ -484,7 +462,6 @@ func (l *Lexer) nextIdentifier() string {
 			// absorb.
 		default:
 			l.backup()
-			// l.emit(Name)
 			return l.Current()
 		}
 	}
@@ -546,11 +523,6 @@ func (l *Lexer) lexString() lexFn {
 // isSpace reports whether r is a space character.
 func isSpace(r rune) bool {
 	return r == ' ' || r == '\t'
-}
-
-// isEndOfLine reports whether r is an end-of-line character.
-func isEndOfLine(r rune) bool {
-	return r == '\r' || r == '\n'
 }
 
 // isAlphaNumeric reports whether r is an alphabetic, digit, or underscore.

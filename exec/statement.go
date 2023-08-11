@@ -20,18 +20,11 @@ package exec
 */
 
 import (
-	// "fmt"
-
 	"github.com/pkg/errors"
 
 	"github.com/MarioJim/gonja/nodes"
 	"github.com/MarioJim/gonja/parser"
-	// "github.com/MarioJim/gonja/tokens"
 )
-
-// type NodeStatement interface {
-// 	astNode
-// }
 
 // This is the function signature of the tag's parser you will have
 // to implement in order to create a new tag.
@@ -46,8 +39,6 @@ import (
 // Please see the Parser documentation on how to use the parser.
 // See RegisterTag()'s documentation for more information about
 // writing a tag as well.
-
-// type StatementExecutor func(*nodes.Node, *ExecutionContext) *Value
 
 type Statement interface {
 	nodes.Statement
@@ -70,10 +61,6 @@ func (ss *StatementSet) Register(name string, parser parser.StatementParser) err
 		return errors.Errorf("Statement '%s' is already registered", name)
 	}
 	(*ss)[name] = parser
-	// &statement{
-	// 	name:   name,
-	// 	parser: parserFn,
-	// }
 	return nil
 }
 
@@ -84,10 +71,6 @@ func (ss *StatementSet) Replace(name string, parser parser.StatementParser) erro
 		return errors.Errorf("Statement '%s' does not exist (therefore cannot be overridden)", name)
 	}
 	(*ss)[name] = parser
-	// statements[name] = &statement{
-	// 	name:   name,
-	// 	parser: parserFn,
-	// }
 	return nil
 }
 
@@ -97,58 +80,3 @@ func (ss *StatementSet) Update(other StatementSet) StatementSet {
 	}
 	return *ss
 }
-
-// func (ss StatementSet) Parsers() map[string]parser.StatementParser {
-// 	parsers := map[string]parser.StatementParser{}
-// 	for key, specs := range ss {
-// 		parsers[key] = specs.Parse
-// 	}
-// 	return parsers
-// }
-
-// // Tag = "{%" IDENT ARGS "%}"
-// func (p *Parser) ParseStatement() (ast.Statement, *Error) {
-// 	p.Consume() // consume "{%"
-// 	tokenName := p.MatchType(TokenIdentifier)
-
-// 	// Check for identifier
-// 	if tokenName == nil {
-// 		return nil, p.Error("Statement name must be an identifier.", nil)
-// 	}
-
-// 	// Check for the existing statement
-// 	stmt, exists := statements[tokenName.Val]
-// 	if !exists {
-// 		// Does not exists
-// 		return nil, p.Error(fmt.Sprintf("Statement '%s' not found (or beginning not provided)", tokenName.Val), tokenName)
-// 	}
-
-// 	// Check sandbox tag restriction
-// 	if _, isBanned := p.bannedStmts[tokenName.Val]; isBanned {
-// 		return nil, p.Error(fmt.Sprintf("Usage of statement '%s' is not allowed (sandbox restriction active).", tokenName.Val), tokenName)
-// 	}
-
-// 	var argsToken []*Token
-// 	for p.Peek(TokenSymbol, "%}") == nil && p.Remaining() > 0 {
-// 		// Add token to args
-// 		argsToken = append(argsToken, p.Current())
-// 		p.Consume() // next token
-// 	}
-
-// 	// EOF?
-// 	if p.Remaining() == 0 {
-// 		return nil, p.Error("Unexpectedly reached EOF, no statement end found.", p.lastToken)
-// 	}
-
-// 	p.Match(TokenSymbol, "%}")
-
-// 	argParser := newParser(p.name, argsToken, p.template)
-// 	if len(argsToken) == 0 {
-// 		// This is done to have nice EOF error messages
-// 		argParser.lastToken = tokenName
-// 	}
-
-// 	p.template.level++
-// 	defer func() { p.template.level-- }()
-// 	return stmt.parser(p, tokenName, argParser)
-// }

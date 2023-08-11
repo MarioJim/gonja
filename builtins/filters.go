@@ -18,6 +18,8 @@ import (
 	"github.com/pelletier/go-toml/v2"
 	"github.com/pkg/errors"
 	"golang.org/x/exp/slices"
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 	"gopkg.in/yaml.v3"
 
 	"github.com/MarioJim/gonja/exec"
@@ -1083,7 +1085,8 @@ func filterTitle(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec.
 	if !in.IsString() {
 		return exec.AsValue("")
 	}
-	return exec.AsValue(strings.Title(strings.ToLower(in.String())))
+	titleCaser := cases.Title(language.English)
+	return exec.AsValue(titleCaser.String(in.String()))
 }
 
 func filterTrim(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec.Value {

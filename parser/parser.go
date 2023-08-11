@@ -57,9 +57,6 @@ func (p *Parser) Consume() {
 
 // Next returns and consume the current token
 func (p *Parser) Next() *tokens.Token {
-	// t := p.Stream.Next()
-	// p.Consume()
-	// return t
 	return p.Stream.Next()
 }
 

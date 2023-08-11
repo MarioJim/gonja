@@ -6,7 +6,6 @@ import (
 
 	"github.com/MarioJim/gonja/nodes"
 	"github.com/pkg/errors"
-	// "github.com/MarioJim/gonja/nodes"
 )
 
 // FilterFunction is the type filter functions must fulfil

@@ -6,6 +6,8 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 )
 
 const LOREM_IPSUM = `Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
@@ -79,6 +81,7 @@ func Lorem(count int, method string) (string, error) {
 }
 
 func Lipsum(n int, html bool, min int, max int) string {
+	titleCaser := cases.Title(language.English)
 	result := []string{}
 
 	for i := 0; i < n; i++ {
@@ -99,7 +102,7 @@ func Lipsum(n int, html bool, min int, max int) string {
 			}
 
 			if nextCapitalized {
-				word = strings.Title(word)
+				word = titleCaser.String(word)
 				nextCapitalized = false
 			}
 
@@ -118,7 +121,7 @@ func Lipsum(n int, html bool, min int, max int) string {
 			p = append(p, word)
 		}
 
-		// # ensure that the paragraph ends with a dot.
+		// ensure that the paragraph ends with a dot.
 		str := strings.Join(p, " ")
 		if strings.HasSuffix(str, ",") {
 			str = str[:len(str)-1] + "."
@@ -138,77 +141,3 @@ func Lipsum(n int, html bool, min int, max int) string {
 	}
 	return strings.Join(htmlResult, "\n")
 }
-
-// Generates some lorem ipsum for the template.
-// By default, five paragraphs of HTML are generated
-// with each paragraph between 20 and 100 words.
-// If html is False, regular text is returned.
-// func lipsum(n=5, html=True, min=20, max=100) {}
-// func Lorem(count int, method string) (string, error) {
-// 	var out strings.Builder
-// 	switch method {
-// 	case "b":
-// 		if random {
-// 			for i := 0; i < count; i++ {
-// 				if i > 0 {
-// 					out.WriteString("\n")
-// 				}
-// 				par := LoremParagraphs[rand.Intn(len(LoremParagraphs))]
-// 				out.WriteString(par)
-// 			}
-// 		} else {
-// 			for i := 0; i < count; i++ {
-// 				if i > 0 {
-// 					out.WriteString("\n")
-// 				}
-// 				par := LoremParagraphs[i%len(LoremParagraphs)]
-// 				out.WriteString(par)
-// 			}
-// 		}
-// 	case "w":
-// 		if random {
-// 			for i := 0; i < count; i++ {
-// 				if i > 0 {
-// 					out.WriteString(" ")
-// 				}
-// 				word := LoremWords[rand.Intn(len(LoremWords))]
-// 				out.WriteString(word)
-// 			}
-// 		} else {
-// 			for i := 0; i < count; i++ {
-// 				if i > 0 {
-// 					out.WriteString(" ")
-// 				}
-// 				word := LoremWords[i%len(LoremWords)]
-// 				out.WriteString(word)
-// 			}
-// 		}
-// 	case "p":
-// 		if random {
-// 			for i := 0; i < count; i++ {
-// 				if i > 0 {
-// 					out.WriteString("\n")
-// 				}
-// 				out.WriteString("<p>")
-// 				par := LoremParagraphs[rand.Intn(len(LoremParagraphs))]
-// 				out.WriteString(par)
-// 				out.WriteString("</p>")
-// 			}
-// 		} else {
-// 			for i := 0; i < count; i++ {
-// 				if i > 0 {
-// 					out.WriteString("\n")
-// 				}
-// 				out.WriteString("<p>")
-// 				par := LoremParagraphs[i%len(LoremParagraphs)]
-// 				out.WriteString(par)
-// 				out.WriteString("</p>")
-
-// 			}
-// 		}
-// 	default:
-// 		return "", errors.Errorf("unsupported method: %s", method)
-// 	}
-
-// 	return out.String(), nil
-// }

@@ -40,7 +40,6 @@ func extendsParser(p *parser.Parser, args *parser.Parser) (nodes.Statement, erro
 		return nil, args.Error("This template has already one parent.", args.Current())
 	}
 
-	// var filename nodes.Node
 	if filename := args.Match(tokens.String); filename != nil {
 		stmt.Filename = filename.Val
 		tpl, err := p.TemplateParser(stmt.Filename)
